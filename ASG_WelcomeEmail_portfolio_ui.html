@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Email Responsive Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --t: 0;                        /* 0 = phone, 1 = laptop */
+    --phone-w: 410;
+    --laptop-w: 1200;
+    --content-w: clamp(410px, calc(410px + (var(--laptop-w) - var(--phone-w)) * var(--t) * 1px), calc(100vw - 80px));
+
+    --bg: #0d0d0f;
+    --surface: #16161a;
+    --border: #2a2a32;
+    --accent: #6c63ff;
+    --accent2: #ff6584;
+    --text: #e8e8f0;
+    --muted: #5a5a6e;
+
+    --frame-radius: calc(38px - var(--t) * 26px);
+    --frame-border: calc(10px + var(--t) * 6px);
+    --bezel-top: calc(42px - var(--t) * 18px);
+    --bezel-bottom: calc(42px - var(--t) * 28px);
+    --bezel-side: calc(12px - var(--t) * 0px);
+    --shadow-spread: calc(30px + var(--t) * 40px);
+    --shadow-color: rgba(108, 99, 255, calc(0.25 + var(--t) * 0.15));
+
+    --phone-opacity: calc(1 - var(--t) * 1.5);
+    --laptop-opacity: calc(var(--t) * 1.5 - 0.3);
+    --keyboard-h: calc(var(--t) * 48px);
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: transparent;
+    font-family: 'Syne', sans-serif;
+    color: var(--text);
+    overflow: hidden;
+  }
+
+  /* ── Stage ── */
+  .stage {
+    width: 100%; height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 100px;
+    gap: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── Top bar ── */
+  .topbar { display: none; }
+
+  .topbar-brand {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text);
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .topbar-brand span {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+    box-shadow: 0 0 8px var(--accent);
+  }
+
+  .topbar-badges {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    transition: all 0.3s ease;
+  }
+
+  .badge.mobile-badge {
+    opacity: calc(1 - var(--t));
+    border-color: rgba(255, 101, 132, calc(0.6 - var(--t) * 0.6));
+    color: rgba(255, 101, 132, calc(1 - var(--t)));
+  }
+
+  .badge.desktop-badge {
+    opacity: var(--t);
+    border-color: rgba(108, 99, 255, calc(var(--t) * 0.6));
+    color: rgba(108, 99, 255, calc(var(--t)));
+  }
+
+  .width-readout {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    min-width: 60px;
+    text-align: right;
+  }
+
+  /* ── Device wrap ── */
+  .device-wrap {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ── Device frame ── */
+  .device {
+    position: relative;
+    width: var(--content-w);
+    max-width: calc(100vw - 80px);
+    min-width: 0;
+    transition: width 0.05s linear;
+    will-change: width;
+    border-radius: calc(var(--frame-radius) + 2px);
+    overflow: hidden;
+  }
+
+  /* Outer shell */
+  .device-shell {
+    position: relative;
+    background: linear-gradient(160deg, #2a2a36 0%, #1a1a22 50%, #141418 100%);
+    border-radius: var(--frame-radius);
+    padding: calc(var(--bezel-top) + var(--frame-border)) var(--bezel-side) calc(var(--bezel-bottom) + var(--frame-border));
+    box-shadow:
+      inset 0 0 0 var(--frame-border) #252530,
+      0 0 0 1px rgba(255,255,255,0.06),
+      inset 0 1px 0 rgba(255,255,255,0.08);
+    transition:
+      border-radius 0.4s cubic-bezier(0.4,0,0.2,1),
+      padding 0.4s cubic-bezier(0.4,0,0.2,1),
+      box-shadow 0.4s cubic-bezier(0.4,0,0.2,1);
+    overflow: hidden;
+  }
+
+  /* Reflection highlight on top edge */
+  .device-shell::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 10%; right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    border-radius: 100%;
+  }
+
+  /* ── Phone notch ── */
+  .phone-notch {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90px;
+    height: 22px;
+    background: #0d0d0f;
+    border-radius: 0 0 16px 16px;
+    opacity: calc(max(0, 1 - var(--t) * 4));
+    transition: opacity 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .phone-notch .notch-cam {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #1a1a22;
+    border: 1px solid #2a2a32;
+  }
+
+  .phone-notch .notch-speaker {
+    width: 32px; height: 4px;
+    border-radius: 2px;
+    background: #1a1a22;
+  }
+
+  /* ── Phone side buttons ── */
+  .phone-btn-left,
+  .phone-btn-right {
+    position: absolute;
+    top: 0; bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 80px;
+    gap: 8px;
+    opacity: calc(max(0, 1 - var(--t) * 5));
+    transition: opacity 0.15s ease;
+    pointer-events: none;
+  }
+
+  .phone-btn-left { left: -14px; }
+  .phone-btn-right { right: -14px; }
+
+  .phone-btn-left .btn, .phone-btn-right .btn {
+    width: 3px;
+    border-radius: 2px;
+    background: #2a2a36;
+  }
+
+  .phone-btn-left .btn:nth-child(1) { height: 28px; margin-top: 10px; }
+  .phone-btn-left .btn:nth-child(2) { height: 36px; }
+  .phone-btn-left .btn:nth-child(3) { height: 36px; }
+  .phone-btn-right .btn:nth-child(1) { height: 52px; margin-top: 30px; }
+
+  /* ── Laptop camera dot ── */
+  .laptop-cam {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #1a1a22;
+    border: 1px solid #2a2a32;
+    opacity: calc(max(0, var(--t) * 3 - 1.5));
+    transition: opacity 0.2s ease;
+  }
+
+  .laptop-cam::after {
+    content: '';
+    position: absolute;
+    top: 1px; left: 1px;
+    width: 2px; height: 2px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+  }
+
+  /* ── Screen ── */
+  .screen {
+    position: relative;
+    background: #000;
+    border-radius: calc(var(--frame-radius) - 6px);
+    overflow: hidden;
+    transition: border-radius 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .screen-inner {
+    width: 100%;
+    height: clamp(650px, 75vh, 900px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    position: relative;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .screen-inner::-webkit-scrollbar {
+    display: none;
+    width: 0;
+  }
+
+  .screen-glare { display: none; }
+
+  iframe {
+    width: 100%;
+    height: 4100px;
+    border: none;
+    display: block;
+    background: #fff;
+  }
+
+  /* ── Laptop base/keyboard ── */
+  .keyboard-base {
+    position: relative;
+    width: 100%;
+    height: var(--keyboard-h);
+    background: linear-gradient(180deg, #1e1e26 0%, #161620 100%);
+    border-radius: 0 0 6px 6px;
+    overflow: hidden;
+    transition: height 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* Trackpad hint */
+  .trackpad {
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 22%;
+    height: 12px;
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.07);
+    background: rgba(255,255,255,0.03);
+    opacity: calc(max(0, var(--t) * 5 - 3.5));
+    transition: opacity 0.2s ease;
+  }
+
+  /* Key rows */
+  .key-rows {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 85%;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    opacity: calc(max(0, var(--t) * 5 - 3.5));
+    transition: opacity 0.2s ease;
+  }
+
+  .key-row {
+    display: flex;
+    gap: 2px;
+    justify-content: center;
+  }
+
+  .key {
+    height: 6px;
+    border-radius: 1px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.05);
+    flex: 1;
+  }
+
+  /* ── Hinge ── */
+  .hinge {
+    height: calc(var(--t) * 3px);
+    background: #1a1a22;
+    width: 88%;
+    margin: 0 auto;
+    transition: height 0.4s cubic-bezier(0.4,0,0.2,1);
+    border-radius: 0 0 2px 2px;
+  }
+
+  /* ── Slider Control ── */
+  .slider-area {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 360px;
+  }
+
+  .slider-track-wrap {
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .device-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+  }
+
+  .device-icon.active { opacity: 1; }
+
+  .device-icon svg {
+    width: 28px; height: 28px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .icon-phone { color: var(--accent2); }
+  .icon-laptop { color: var(--accent); }
+
+  .slider-track {
+    flex: 1;
+    position: relative;
+    height: 4px;
+    background: var(--border);
+    border-radius: 100px;
+    cursor: pointer;
+  }
+
+  .slider-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    border-radius: 100px;
+    width: calc(var(--t) * 100%);
+    transition: width 0.05s linear;
+  }
+
+  .slider-thumb {
+    position: absolute;
+    top: 50%;
+    left: calc(var(--t) * 100%);
+    transform: translate(-50%, -50%);
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 0 2px rgba(255,255,255,0.1);
+    cursor: grab;
+    transition: left 0.05s linear, transform 0.1s ease, box-shadow 0.1s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slider-thumb:active { cursor: grabbing; }
+
+  .slider-thumb::before {
+    content: '⠿';
+    font-size: 20px;
+    color: #888;
+    letter-spacing: -1px;
+  }
+
+  .slider-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .slider-label::before,
+  .slider-label::after {
+    content: '';
+    display: block;
+    height: 1px;
+    width: 30px;
+    background: var(--border);
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="topbar-brand">
+      <span></span>
+      Responsive Preview
+    </div>
+    <div class="topbar-badges">
+      <div class="badge mobile-badge">Mobile</div>
+      <div class="badge desktop-badge">Desktop</div>
+    </div>
+    <div class="width-readout" id="widthReadout">390px</div>
+  </div>
+
+  <!-- Device -->
+  <div class="device-wrap">
+    <div class="device" id="device">
+
+      <div class="device-shell">
+
+        <!-- Phone notch -->
+        <div class="phone-notch">
+          <div class="notch-speaker"></div>
+          <div class="notch-cam"></div>
+        </div>
+
+        <!-- Laptop camera -->
+        <div class="laptop-cam"></div>
+
+        <!-- Phone buttons -->
+        <div class="phone-btn-left">
+          <div class="btn"></div>
+          <div class="btn"></div>
+          <div class="btn"></div>
+        </div>
+        <div class="phone-btn-right">
+          <div class="btn"></div>
+        </div>
+
+        <!-- Screen -->
+        <div class="screen">
+          <div class="screen-inner">
+            <iframe
+              src="index_chino.html"
+              title="Email Preview"
+              scrolling="no"
+              id="emailFrame"
+            ></iframe>
+          </div>
+          <div class="screen-glare"></div>
+        </div>
+
+      </div><!-- /shell -->
+
+      <!-- Hinge -->
+      <div class="hinge"></div>
+
+      <!-- Keyboard base -->
+      <div class="keyboard-base">
+        <div class="key-rows">
+          <div class="key-row">
+            <div class="key" style="max-width:24px"></div>
+            <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+            <div class="key" style="max-width:18px"></div>
+            <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+          </div>
+          <div class="key-row">
+            <div class="key" style="flex:1.5"></div>
+            <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+            <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+            <div class="key" style="flex:1.5"></div>
+          </div>
+          <div class="key-row">
+            <div class="key" style="flex:2"></div>
+            <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+            <div class="key"></div><div class="key"></div><div class="key"></div>
+            <div class="key" style="flex:2"></div>
+          </div>
+        </div>
+        <div class="trackpad"></div>
+      </div>
+
+    </div><!-- /device -->
+  </div><!-- /device-wrap -->
+
+  <!-- Slider -->
+  <div class="slider-area">
+    <div class="slider-track-wrap">
+
+      <div class="device-icon icon-phone active" id="iconPhone">
+        <!-- Phone SVG -->
+        <svg viewBox="0 0 24 24">
+          <rect x="5" y="2" width="14" height="20" rx="3"/>
+          <circle cx="12" cy="18.5" r="0.8" fill="currentColor"/>
+        </svg>
+      </div>
+
+      <div class="slider-track" id="sliderTrack">
+        <div class="slider-fill" id="sliderFill"></div>
+        <div class="slider-thumb" id="sliderThumb"></div>
+      </div>
+
+      <div class="device-icon icon-laptop" id="iconLaptop">
+        <!-- Laptop SVG -->
+        <svg viewBox="0 0 24 24">
+          <rect x="2" y="4" width="20" height="13" rx="2"/>
+          <path d="M1 20h22"/>
+        </svg>
+      </div>
+
+    </div>
+    <div class="slider-label">drag to morph</div>
+  </div>
+
+</div><!-- /stage -->
+
+<script>
+  const PHONE_W = 410;
+  const LAPTOP_W = 1200;
+  const root = document.documentElement;
+  const device = document.getElementById('device');
+  const sliderTrack = document.getElementById('sliderTrack');
+  const sliderThumb = document.getElementById('sliderThumb');
+  const sliderFill = document.getElementById('sliderFill');
+  const widthReadout = document.getElementById('widthReadout');
+  const iconPhone = document.getElementById('iconPhone');
+  const iconLaptop = document.getElementById('iconLaptop');
+
+  let t = 0; // 0 = phone, 1 = laptop
+  let dragging = false;
+
+  const frame = document.getElementById('emailFrame');
+
+  function setT(val) {
+    t = Math.max(0, Math.min(1, val));
+    root.style.setProperty('--t', t);
+
+    const w = Math.round(PHONE_W + (LAPTOP_W - PHONE_W) * t);
+    widthReadout.textContent = w + 'px';
+
+    iconPhone.classList.toggle('active', t < 0.5);
+    iconLaptop.classList.toggle('active', t >= 0.5);
+  }
+
+  function trackOffset(clientX) {
+    const rect = sliderTrack.getBoundingClientRect();
+    const ratio = (clientX - rect.left) / rect.width;
+    setT(ratio);
+  }
+
+  // Mouse drag
+  sliderThumb.addEventListener('mousedown', (e) => {
+    dragging = true;
+    e.preventDefault();
+  });
+
+  sliderTrack.addEventListener('mousedown', (e) => {
+    dragging = true;
+    trackOffset(e.clientX);
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!dragging) return;
+    trackOffset(e.clientX);
+  });
+
+  document.addEventListener('mouseup', () => { dragging = false; });
+
+  // Touch drag
+  sliderThumb.addEventListener('touchstart', (e) => {
+    dragging = true;
+    e.preventDefault();
+  }, { passive: false });
+
+  sliderTrack.addEventListener('touchstart', (e) => {
+    dragging = true;
+    trackOffset(e.touches[0].clientX);
+    e.preventDefault();
+  }, { passive: false });
+
+  document.addEventListener('touchmove', (e) => {
+    if (!dragging) return;
+    trackOffset(e.touches[0].clientX);
+  }, { passive: true });
+
+  document.addEventListener('touchend', () => { dragging = false; });
+
+  // Hide scrollbars inside iframe
+  frame.addEventListener('load', () => {
+    try {
+      const style = frame.contentDocument.createElement('style');
+      style.textContent = '::-webkit-scrollbar { display: none !important; } html, body { scrollbar-width: none !important; -ms-overflow-style: none !important; }';
+      frame.contentDocument.head.appendChild(style);
+    } catch(e) {}
+  });
+
+  // Initialize
+  setT(0);
+</script>
+</body>
+</html>
