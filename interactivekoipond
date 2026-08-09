@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koi Pond</title>
+    <style>
+        body{margin:0;overflow-x:hidden}
+        .koi-pond-wrapper{display:flex;justify-content:center;align-items:center;width:100%;box-sizing:border-box}
+        .koi-pond-frame{width:100vw;height:600px;overflow:hidden;position:relative}
+        .koi-pond-frame canvas{display:block;cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 1080 1080'%3E%3Cpath fill='%23fff' stroke='%23000' stroke-width='25' d='M701.5,875.6c-2.7,0-5.1-.3-7.1-1-3.3-1.1-8.6-6.3-11.8-13l-1.2-2.6-2.4-1.5c-32.2-20.3-60.5-24.3-87.9-28.2-34.3-4.8-69.8-9.8-119.6-46.1l-45-32.8c-24.9-18.1-43.7-44.3-63.6-72.1-23.3-32.5-47.4-66.1-83.4-89-37-23.5-72-45.8-104.5-73.9-12.5-10.8-18.2-22-18.5-36.2-.3-15,6-32.9,20.4-38.9h.3c11.4-5.2,22.7-7.7,34.7-7.7,28.6,0,64.1,14.1,111.6,44.4,8.4,5.3,13.9,11.3,20.3,18.3,3.7,4,7.5,8.1,12,12.3l5.5,5.1c.8,1.2,2,2.3,3.3,3.1l2.4,2.2,4.8-.8c3.1-.5,5.8-2.4,7.3-5.2,2.6-4.7.6-9.3-.1-11.1-5.9-13.9-8.6-27.6-11.6-43.6-1.5-7.6-3-15.4-4.9-24.1-5.9-25.8,1.1-62.3,30.3-81.5l18.2-11.9-20.9-6c-5.3-1.5-10-2.2-14.7-2.2-7.2,0-14.6,1.6-23.2,5.2l-77.4,27.4c-21.2,7.5-41.3,11.3-59.6,11.3h0c-15.2,0-29-2.7-41-8-11.2-4.9-18.7-13.6-20-23.1-1.5-10.8,2.9-20.4,13.8-30.2,14.7-13.4,66.5-40.3,123-63.9,64.7-27,119.1-43.1,145.5-43.1s8.1.6,9.7,1.1l111.9,35.3c5.3,1.7,10.9,2.5,17.2,2.5s16.8-1.4,25-2.8c8.1-1.4,15.8-2.7,23.3-2.7s17.8,2.4,25,7.4c17.9,12.6,39.1,25.6,59.9,25.8,26.8.3,37.3,9.5,50.6,21.1,13,11.3,27.7,24.1,57.8,30.5,32.7,7,46.5,31.6,52.2,50.9,2.7,9.1,2.8,17.5,2.9,26.5,0,4.7.1,9.5.6,14.4l18.5,201c2.1,22.5,12.7,41.9,23,60.7,3.8,6.9,7.4,13.5,10.5,20,2.4,5.1,2.2,5.4-1.5,10-.7.9-1.5,1.9-2.3,2.9-47.1,63.4-115.9,118.4-199.2,158.9-6.6,3.2-14,5.1-20.2,5.1Z'/%3E%3C/svg%3E") 6 2, pointer;width:100%;height:100%;filter:url(#underwater-distortion)}
+        .koi-pond-svg-filters{position:absolute;width:0;height:0;overflow:hidden}
+        .refresh-btn{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);padding:10px 24px;font-size:14px;font-weight:500;letter-spacing:0.1em;background:none;color:#a8d4f0;border:none;cursor:pointer;transition:opacity 0.3s ease;font-family:system-ui,sans-serif;opacity:0;text-transform:uppercase}
+        .refresh-btn:hover{opacity:1;text-shadow:0 0 10px rgba(100,180,220,0.6)}
+        .fullscreen-btn{position:absolute;top:15px;right:15px;padding:8px;background:none;border:none;cursor:pointer;opacity:0;transition:opacity 0.3s ease}
+        .fullscreen-btn:hover{opacity:1}
+        .fullscreen-btn svg{width:24px;height:24px;fill:none;stroke:#a8d4f0;stroke-width:2;filter:drop-shadow(0 0 6px rgba(100,180,220,0.5))}
+        .koi-pond-frame:fullscreen{width:100vw;height:100vh;background:#0c2a42}
+        @media(max-width:768px){.koi-pond-frame{height:100vh}}
+    </style>
+</head>
+<body>
+    <svg class="koi-pond-svg-filters"><defs>
+        <filter id="underwater-distortion" x="-5%" y="-5%" width="110%" height="110%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.008 0.012" numOctaves="2" result="turbulence" seed="5">
+                <animate attributeName="baseFrequency" dur="60s" values="0.008 0.012;0.012 0.008;0.008 0.012" repeatCount="indefinite"/>
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="10" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+    </defs></svg>
+    <div class="koi-pond-wrapper"><div class="koi-pond-frame"><canvas id="pond"></canvas><button class="refresh-btn" onclick="resetPond()">REFRESH</button><button class="fullscreen-btn" onclick="toggleFullscreen()" title="Fullscreen"><svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></button></div></div>
+    <script>
+        const canvas = document.getElementById('pond'), ctx = canvas.getContext('2d');
+        let W, H, mouseX, mouseY;
+        const PI = Math.PI, PI2 = PI*2, sin = Math.sin, cos = Math.cos, hypot = Math.hypot, rand = Math.random, floor = Math.floor;
+        
+        let allFish = [], mapleLeaves = [], smallFish = [];
+        
+        function toggleFullscreen() {
+            const frame = document.querySelector('.koi-pond-frame');
+            if (!document.fullscreenElement) {
+                frame.requestFullscreen().catch(err => console.log(err));
+            } else {
+                document.exitFullscreen();
+            }
+        }
+        
+        function resizeCanvas() {
+            const frame = canvas.parentElement;
+            const rect = frame.getBoundingClientRect();
+            const newW = Math.round(rect.width);
+            const newH = Math.round(rect.height);
+            if (W === newW && H === newH) return;
+            const scaleX = W ? newW / W : 1;
+            const scaleY = H ? newH / H : 1;
+            W = canvas.width = newW;
+            H = canvas.height = newH;
+            mouseX = W/2; mouseY = H/2;
+            allFish.forEach(f => {
+                f.x *= scaleX; f.y *= scaleY;
+                f.tgtX *= scaleX; f.tgtY *= scaleY;
+                f.spine.forEach(s => { s.x *= scaleX; s.y *= scaleY; });
+            });
+            smallFish.forEach(f => {
+                f.x *= scaleX; f.y *= scaleY;
+                f.tgtX *= scaleX; f.tgtY *= scaleY;
+                f.spine.forEach(s => { s.x *= scaleX; s.y *= scaleY; });
+            });
+            mapleLeaves.forEach(l => { l.x *= scaleX; l.y *= scaleY; });
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        document.addEventListener('fullscreenchange', () => setTimeout(resizeCanvas, 100));
+        
+        const getCoords = (x, y) => { const r = canvas.getBoundingClientRect(); return {x: (x-r.left)*(W/r.width), y: (y-r.top)*(H/r.height)}; };
+        canvas.addEventListener('mousemove', e => { const c = getCoords(e.clientX, e.clientY); mouseX = c.x; mouseY = c.y; });
+        canvas.addEventListener('touchmove', e => { e.preventDefault(); const c = getCoords(e.touches[0].clientX, e.touches[0].clientY); mouseX = c.x; mouseY = c.y; });
+
+        const ripples = [], foodParticles = [];
+        
+        class Ripple {
+            constructor(x, y) { this.x = x; this.y = y; this.r = 5; this.max = 100 + rand()*50; this.spd = 0.5 + rand()*0.3; }
+            update() { this.r += this.spd; this.op = 0.25 * (1 - this.r/this.max); this.lw = 1.5 * (1 - this.r/this.max*0.7); }
+            draw() {
+                if (this.op <= 0) return;
+                ctx.strokeStyle = `rgba(180,220,255,${this.op})`; ctx.lineWidth = this.lw;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, PI2); ctx.stroke();
+                if (this.r > 20) { ctx.strokeStyle = `rgba(200,230,255,${this.op*0.4})`; ctx.lineWidth = this.lw*0.5; ctx.beginPath(); ctx.arc(this.x, this.y, this.r*0.65, 0, PI2); ctx.stroke(); }
+            }
+            done() { return this.r >= this.max; }
+        }
+
+        class MapleLeaf {
+            constructor() {
+                this.x = rand()*W; this.y = rand()*H; this.sz = 14 + rand()*14.4; this.rot = rand()*PI2;
+                this.rotSpd = (rand()-0.5)*0.006; this.dX = (rand()-0.5)*0.25; this.dY = (rand()-0.5)*0.12;
+                this.vX = 0; this.vY = 0; this.vRot = 0;
+                this.wob = rand()*PI2; this.wobSpd = 0.008 + rand()*0.008;
+                const c = rand(); this.col = c < 0.3 ? {r:200+rand()*45,g:45+rand()*35,b:35+rand()*25} : c < 0.55 ? {r:220+rand()*35,g:75+rand()*45,b:30+rand()*25} : c < 0.8 ? {r:235+rand()*20,g:130+rand()*50,b:35+rand()*30} : {r:245+rand()*10,g:190+rand()*45,b:50+rand()*40};
+                this.lobes = []; for (let i = 0; i < 7; i++) this.lobes.push((1 - Math.abs(i-3)*0.12) * (0.9 + rand()*0.2));
+            }
+            update(fish) {
+                for (const f of fish) {
+                    for (let i = 0; i < f.segs; i += 2) {
+                        const s = f.spine[i], dx = this.x - s.x, dy = this.y - s.y, d = hypot(dx, dy);
+                        const hitR = f.w * (f.skel ? 1.2 : 1.8) + this.sz * 0.5;
+                        if (d < hitR && d > 0) {
+                            const push = (hitR - d) / hitR * 2.5;
+                            this.vX += dx/d * push; this.vY += dy/d * push;
+                            this.vRot += (rand() - 0.5) * 0.15;
+                        }
+                    }
+                }
+                this.vX *= 0.96; this.vY *= 0.96; this.vRot *= 0.94;
+                this.wob += this.wobSpd;
+                this.x += this.dX + sin(this.wob)*0.4 + this.vX;
+                this.y += this.dY + cos(this.wob*0.7)*0.25 + this.vY;
+                this.rot += this.rotSpd + sin(this.wob)*0.001 + this.vRot;
+                if (this.x < -this.sz*2) this.x = W+this.sz; if (this.x > W+this.sz*2) this.x = -this.sz;
+                if (this.y < -this.sz*2) this.y = H+this.sz; if (this.y > H+this.sz*2) this.y = -this.sz;
+            }
+            draw() {
+                ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(this.rot);
+                ctx.fillStyle = `rgb(${this.col.r},${this.col.g},${this.col.b})`; ctx.beginPath();
+                const ang = i => ((i/6)*0.75+0.125)*PI2 - PI/2;
+                ctx.moveTo(cos(ang(0))*this.sz*this.lobes[0], sin(ang(0))*this.sz*this.lobes[0]);
+                for (let i = 0; i < 6; i++) {
+                    const a = ang(i), na = ang(i+1), l = this.lobes[i], nl = this.lobes[i+1], ma = (a+na)/2;
+                    const vx = cos(ma)*this.sz*0.3, vy = sin(ma)*this.sz*0.3;
+                    const tx = cos(a)*this.sz*l, ty = sin(a)*this.sz*l, ntx = cos(na)*this.sz*nl, nty = sin(na)*this.sz*nl;
+                    ctx.quadraticCurveTo(tx*0.6+vx*0.4, ty*0.6+vy*0.4, vx, vy);
+                    ctx.quadraticCurveTo(vx*0.4+ntx*0.6, vy*0.4+nty*0.6, ntx, nty);
+                }
+                ctx.quadraticCurveTo(this.sz*0.15, this.sz*0.1, 0, this.sz*0.08);
+                ctx.quadraticCurveTo(-this.sz*0.15, this.sz*0.1, cos(ang(0))*this.sz*this.lobes[0], sin(ang(0))*this.sz*this.lobes[0]);
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(120,75,50,0.85)'; ctx.lineWidth = this.sz*0.07; ctx.lineCap = 'round';
+                ctx.beginPath(); ctx.moveTo(0, 0); ctx.quadraticCurveTo(this.sz*0.04, this.sz*0.35, 0, this.sz*0.5); ctx.stroke();
+                ctx.restore();
+            }
+        }
+
+        class FoodParticle {
+            constructor(x, y) {
+                this.x = x; this.y = y; this.r = 3 + rand()*2; this.eaten = false; this.sink = 0.1 + rand()*0.2;
+                this.wob = rand()*PI2; this.rot = rand()*PI2; this.rotSpd = (rand()-0.5)*0.02;
+                this.pts = []; for (let i = 0; i < 6 + floor(rand()*4); i++) this.pts.push({a: i/(6+floor(rand()*4))*PI2, r: 0.5+rand()*0.7});
+            }
+            update() { this.y += this.sink; this.wob += 0.05; this.x += sin(this.wob)*0.3; this.rot += this.rotSpd; }
+            draw() {
+                if (this.eaten) return;
+                ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(this.rot);
+                ctx.fillStyle = '#d4a574'; ctx.beginPath();
+                this.pts.forEach((p, i) => { const px = cos(p.a)*this.r*p.r, py = sin(p.a)*this.r*p.r; i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py); });
+                ctx.closePath(); ctx.fill(); ctx.strokeStyle = '#b8894f'; ctx.lineWidth = 0.8; ctx.stroke();
+                ctx.restore();
+            }
+            offScreen() { return this.y > H + 10; }
+        }
+
+        const koiPatterns = [
+            [{r:255,g:255,b:255},{r:220,g:70,b:50},{r:240,g:100,b:80}],
+            [{r:255,g:255,b:255},{r:210,g:60,b:45},{r:30,g:30,b:30}],
+            [{r:40,g:40,b:40},{r:255,g:255,b:255},{r:220,g:65,b:50}],
+            [{r:120,g:140,b:160},{r:230,g:80,b:60},{r:255,g:255,b:255}],
+            [{r:255,g:255,b:255},{r:200,g:50,b:40},{r:245,g:245,b:250}],
+            [{r:250,g:200,b:80},{r:255,g:220,b:120},{r:240,g:180,b:50}],
+            [{r:240,g:240,b:245},{r:255,g:255,b:255},{r:220,g:220,b:230}],
+            [{r:210,g:60,b:45},{r:30,g:30,b:30},{r:180,g:50,b:40}],
+            [{r:255,g:200,b:100},{r:40,g:40,b:40},{r:255,g:255,b:255}],
+            [{r:255,g:255,b:255},{r:230,g:90,b:70},{r:255,g:210,b:180}]
+        ];
+
+        class KoiFish {
+            constructor(x, y, size) {
+                this.x = x; this.y = y; this.ang = rand()*PI2;
+                this.len = size || (105 + rand()*25); this.w = this.len * 0.11; this.segs = 12;
+                // Larger fish move slower: size 65 -> speed ~1.1, size 165 -> speed ~0.55
+                const sizeSpeedFactor = 1.3 - (this.len - 65) / 150 * 0.7;
+                this.baseSpd = (0.7 + rand()*0.3) * sizeSpeedFactor; this.spd = this.baseSpd;
+                this.spine = []; for (let i = 0; i < this.segs; i++) this.spine.push({x: x - i*(this.len/this.segs), y: y, ang: this.ang});
+                this.swim = rand()*PI2; this.swimSpd = (0.05 + rand()*0.025) * sizeSpeedFactor;
+                this.lFin = rand()*PI2; this.rFin = rand()*PI2; this.lWhisk = rand()*PI2; this.rWhisk = rand()*PI2; this.turn = 0;
+                this.tgtX = x + cos(this.ang)*100; this.tgtY = y + sin(this.ang)*100; this.tgtFood = null; this.startled = false;
+                this.colors = koiPatterns[floor(rand()*koiPatterns.length)];
+                this.patches = []; const seed = rand()*1000; let s = seed;
+                const sr = sd => { const x = sin(sd)*10000; return x - floor(x); };
+                for (let c = 1; c < this.colors.length; c++) for (let i = 0; i < 3 + floor(sr(s++)*4); i++)
+                    this.patches.push({c, seg: floor(sr(s++)*10), span: 1+floor(sr(s++)*3), off: (sr(s++)-0.5)*0.6, sz: 0.4+sr(s++)*0.5});
+            }
+            findFood() {
+                let near = null, minD = 400;
+                for (const f of foodParticles) { if (f.eaten) continue; const d = hypot(f.x-this.x, f.y-this.y); if (d < minD) { minD = d; near = f; } }
+                return near;
+            }
+            update(all) {
+                this.swim += this.swimSpd;
+                this.lWhisk += this.swimSpd*1.2; this.rWhisk += this.swimSpd*1.35;
+                
+                let sepX = 0, sepY = 0;
+                for (const o of all) { if (o === this) continue; const dx = this.x-o.x, dy = this.y-o.y, d = hypot(dx, dy);
+                    if (d < 150 && d > 0) { const str = ((150-d)/150)**2; sepX += dx/d*str; sepY += dy/d*str; } }
+                
+                this.tgtFood = this.findFood();
+                if (this.tgtFood) {
+                    this.tgtX = this.tgtFood.x; this.tgtY = this.tgtFood.y;
+                    const d = hypot(this.tgtFood.x-this.x, this.tgtFood.y-this.y);
+                    this.spd = d < 50 ? 1 + d/50*1.5 : 2.5;
+                    if (d < 30) { this.tgtFood.eaten = true; this.tgtFood = null; }
+                } else {
+                    this.spd = this.baseSpd;
+                    const md = hypot(mouseX-this.x, mouseY-this.y);
+                    if (md < 250) {
+                        const fi = 1 - md/250, aa = Math.atan2(this.y-mouseY, this.x-mouseX), jit = (rand()-0.5)*0.3;
+                        this.tgtX = this.x + cos(aa+jit)*(150+fi*100); this.tgtY = this.y + sin(aa+jit)*(150+fi*100);
+                        this.spd = this.baseSpd + fi*2.5; this.startled = true;
+                    } else { this.startled = false; if (rand() < 0.01) { this.tgtX = rand()*W; this.tgtY = rand()*H; } }
+                }
+                
+                const dx = this.tgtX-this.x, dy = this.tgtY-this.y, dist = hypot(dx, dy), tAng = Math.atan2(dy, dx);
+                let aDiff = tAng - this.ang; while (aDiff > PI) aDiff -= PI2; while (aDiff < -PI) aDiff += PI2;
+                const turnSpd = this.startled ? 0.12 : this.tgtFood ? (dist < 100 ? 0.08 : 0.05) : 0.03;
+                const aChg = aDiff * turnSpd; this.turn = this.turn*0.92 + aChg*5; this.ang += aChg;
+                
+                if (sepX || sepY) { let sa = Math.atan2(sepY, sepX), sad = sa - this.ang;
+                    while (sad > PI) sad -= PI2; while (sad < -PI) sad += PI2;
+                    this.ang += sad * (this.tgtFood ? 0.02 : 0.05) * hypot(sepX, sepY); }
+                
+                this.x += cos(this.ang)*this.spd; this.y += sin(this.ang)*this.spd;
+                const sm = hypot(sepX, sepY); if (sm > 0) { this.x += sepX/sm*Math.min(sm*2, 1.5); this.y += sepY/sm*Math.min(sm*2, 1.5); }
+                
+                const m = 100; if (this.x < -m) this.x = W+m; if (this.x > W+m) this.x = -m; if (this.y < -m) this.y = H+m; if (this.y > H+m) this.y = -m;
+                
+                this.spine[0] = {x: this.x, y: this.y, ang: this.ang};
+                for (let i = 1; i < this.segs; i++) {
+                    const p = this.spine[i-1], c = this.spine[i], sl = this.len/this.segs, tf = i/this.segs;
+                    const ws = 0.08 + tf*tf*0.25, wo = sin(this.swim - i*0.4)*ws, ta = p.ang + wo;
+                    c.ang = c.ang*0.7 + ta*0.3; c.x = p.x - cos(c.ang)*sl; c.y = p.y - sin(c.ang)*sl;
+                }
+            }
+            draw() { ctx.save(); this.drawFins(); this.drawLive(); ctx.restore(); }
+            wf(p) { 
+                // Fuller body near head, gradual taper toward tail like real koi
+                if (p < 0.15) return 0.9 + p * 2.5;
+                if (p < 0.4) return 1.275 + (p - 0.15) * 0.5;
+                return 1.4 * Math.pow(1 - (p - 0.4) / 0.6, 0.9);
+            }
+            drawLive() {
+                const col = this.colors[0];
+                for (let i = this.segs-1; i >= 0; i--) {
+                    const s = this.spine[i], wf = this.wf(i/this.segs), sw = this.w*Math.max(wf, 0.1);
+                    ctx.save(); ctx.translate(s.x, s.y); ctx.rotate(s.ang);
+                    const g = ctx.createRadialGradient(0, 0, 0, 0, 0, sw);
+                    g.addColorStop(0, `rgba(${col.r},${col.g},${col.b},1)`);
+                    g.addColorStop(0.7, `rgba(${col.r*0.8},${col.g*0.8},${col.b*0.8},1)`);
+                    g.addColorStop(1, `rgba(${col.r*0.6},${col.g*0.6},${col.b*0.6},0.8)`);
+                    ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(0, 0, this.len/this.segs, sw, 0, 0, PI2); ctx.fill(); ctx.restore();
+                }
+                for (const p of this.patches) {
+                    const pc = this.colors[p.c];
+                    for (let j = 0; j < p.span; j++) {
+                        const si = p.seg + j; if (si >= this.segs) continue;
+                        const s = this.spine[si], wf = this.wf(si/this.segs), sw = this.w*Math.max(wf, 0.1), oy = p.off*sw, ps = sw*p.sz;
+                        ctx.save(); ctx.translate(s.x, s.y); ctx.rotate(s.ang);
+                        const g = ctx.createRadialGradient(0, oy, 0, 0, oy, ps);
+                        g.addColorStop(0, `rgba(${pc.r},${pc.g},${pc.b},0.95)`); g.addColorStop(0.6, `rgba(${pc.r},${pc.g},${pc.b},0.85)`); g.addColorStop(1, `rgba(${pc.r},${pc.g},${pc.b},0)`);
+                        ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(0, oy, this.len/this.segs*0.9, ps, 0, 0, PI2); ctx.fill(); ctx.restore();
+                    }
+                }
+                this.drawHead(col);
+            }
+            drawHead(col) {
+                const h = this.spine[0]; ctx.save(); ctx.translate(h.x, h.y); ctx.rotate(h.ang);
+                const g = ctx.createLinearGradient(-this.w*0.6, 0, this.w*1.8, 0);
+                g.addColorStop(0, `rgba(${col.r*0.7},${col.g*0.7},${col.b*0.7},1)`); g.addColorStop(0.5, `rgba(${col.r},${col.g},${col.b},1)`); g.addColorStop(1, `rgba(${col.r*0.9},${col.g*0.9},${col.b*0.9},1)`);
+                ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(this.w*1.8, 0);
+                // More rounded, blunt head shape
+                ctx.quadraticCurveTo(this.w*1.6, -this.w*0.5, this.w*0.8, -this.w*0.85);
+                ctx.quadraticCurveTo(0, -this.w*0.95, -this.w*0.5, -this.w*0.7);
+                ctx.quadraticCurveTo(-this.w*0.8, -this.w*0.35, -this.w*0.8, 0);
+                ctx.quadraticCurveTo(-this.w*0.8, this.w*0.35, -this.w*0.5, this.w*0.7);
+                ctx.quadraticCurveTo(0, this.w*0.95, this.w*0.8, this.w*0.85);
+                ctx.quadraticCurveTo(this.w*1.6, this.w*0.5, this.w*1.8, 0);
+                ctx.closePath(); ctx.fill();
+                if (this.colors.length > 1) {
+                    const hc = this.colors[1], hx = this.w*0.2, hr = this.w*0.5;
+                    const pg = ctx.createRadialGradient(hx, 0, 0, hx, 0, hr);
+                    pg.addColorStop(0, `rgba(${hc.r},${hc.g},${hc.b},0.9)`); pg.addColorStop(0.7, `rgba(${hc.r},${hc.g},${hc.b},0.7)`); pg.addColorStop(1, `rgba(${hc.r},${hc.g},${hc.b},0)`);
+                    ctx.fillStyle = pg; ctx.beginPath(); ctx.ellipse(hx, 0, hr*1.2, hr, 0, 0, PI2); ctx.fill();
+                }
+                ctx.fillStyle = '#000'; ctx.beginPath(); ctx.ellipse(this.w*0.25, -this.w*0.85, this.w*0.28, this.w*0.11, 0, 0, PI2); ctx.fill();
+                ctx.beginPath(); ctx.ellipse(this.w*0.25, this.w*0.85, this.w*0.28, this.w*0.11, 0, 0, PI2); ctx.fill();
+                ctx.fillStyle = 'rgba(255,255,255,0.7)';
+                ctx.beginPath(); ctx.ellipse(this.w*0.38, -this.w*0.92, this.w*0.1, this.w*0.065, 0, 0, PI2); ctx.fill();
+                ctx.beginPath(); ctx.ellipse(this.w*0.38, this.w*0.92, this.w*0.1, this.w*0.065, 0, 0, PI2); ctx.fill();
+                const wc = `rgba(${col.r*0.4},${col.g*0.4},${col.b*0.4},0.7)`, wl = this.w*3, bx = this.w*1.6, by = this.w*0.3, td = this.turn*8;
+                const drawWhisk = (sy, dir) => {
+                    const wv = sin(dir < 0 ? this.lWhisk : this.rWhisk)*0.6 + sin((dir < 0 ? this.lWhisk : this.rWhisk)*2.1)*0.35;
+                    const m1x = bx + wl*0.1, m1y = sy + dir*this.w*(1.0+wv*0.5) + td*0.3;
+                    const m2x = bx - wl*0.15, m2y = sy + dir*this.w*(1.6+wv*0.9) + td*0.5;
+                    const ex = bx - wl*0.4, ey = sy + dir*this.w*(1.3+wv*0.7) + td*0.7;
+                    ctx.lineCap = 'round';
+                    for (let i = 0; i < 12; i++) {
+                        const t = i/12, mt = 1-t, p1x = mt**3*bx + 3*mt**2*t*m1x + 3*mt*t**2*m2x + t**3*ex;
+                        const p1y = mt**3*sy + 3*mt**2*t*m1y + 3*mt*t**2*m2y + t**3*ey;
+                        const t2 = (i+1)/12, mt2 = 1-t2, p2x = mt2**3*bx + 3*mt2**2*t2*m1x + 3*mt2*t2**2*m2x + t2**3*ex;
+                        const p2y = mt2**3*sy + 3*mt2**2*t2*m1y + 3*mt2*t2**2*m2y + t2**3*ey;
+                        ctx.strokeStyle = wc; ctx.lineWidth = Math.max(0.3, 2*(1-t*0.95));
+                        ctx.beginPath(); ctx.moveTo(p1x, p1y); ctx.lineTo(p2x, p2y); ctx.stroke();
+                    }
+                };
+                drawWhisk(-by, -1); drawWhisk(by, 1);
+                ctx.restore();
+            }
+            drawFins() {
+                const ps = this.spine[1], pvs = this.spine[floor(this.segs*0.55)], ts = this.spine[this.segs-1], fw = sin(this.swim)*0.3;
+                const col = this.colors[0]; ctx.strokeStyle = `rgba(${col.r*0.6},${col.g*0.6},${col.b*0.6},0.6)`;
+                ctx.fillStyle = `rgba(${col.r},${col.g},${col.b},0.45)`; ctx.lineWidth = 1;
+                
+                // Pectoral fins - more round/circular fan shape
+                const drawPectoralFin = (s, baseRot, dir) => {
+                    ctx.save(); ctx.translate(s.x, s.y); ctx.rotate(s.ang + baseRot + fw*dir);
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    // Rounder, more circular shape like a fan
+                    ctx.bezierCurveTo(this.w*0.6, dir*this.w*0.8, this.w*0.9, dir*this.w*1.8, this.w*0.4, dir*this.w*2.6);
+                    ctx.bezierCurveTo(-this.w*0.2, dir*this.w*3.0, -this.w*1.2, dir*this.w*2.8, -this.w*1.6, dir*this.w*2.0);
+                    ctx.bezierCurveTo(-this.w*1.9, dir*this.w*1.2, -this.w*1.6, dir*this.w*0.5, -this.w*1.0, dir*this.w*0.2);
+                    ctx.bezierCurveTo(-this.w*0.5, dir*this.w*0.05, 0, 0, 0, 0);
+                    ctx.fill(); ctx.stroke();
+                    ctx.restore();
+                };
+                drawPectoralFin(ps, 0.3, 1);
+                drawPectoralFin(ps, -0.3, -1);
+                
+                // Pelvic fins - larger
+                const pw = sin(this.swim*1.2)*0.12;
+                const drawPelvicFin = (s, baseRot, dir) => {
+                    ctx.save(); ctx.translate(s.x, s.y); ctx.rotate(s.ang + baseRot + pw*dir);
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.quadraticCurveTo(this.w*0.4, dir*this.w*1.2, -this.w*0.2, dir*this.w*2.2);
+                    ctx.quadraticCurveTo(-this.w*1.0, dir*this.w*2.0, -this.w*1.2, dir*this.w*1.2);
+                    ctx.quadraticCurveTo(-this.w*0.9, dir*this.w*0.4, 0, 0);
+                    ctx.fill(); ctx.stroke();
+                    ctx.restore();
+                };
+                drawPelvicFin(pvs, 0.2, 1);
+                drawPelvicFin(pvs, -0.2, -1);
+                
+                // Tail fin - more forked like photo
+                const tailWave = sin(this.swim)*0.2;
+                ctx.save(); ctx.translate(ts.x, ts.y); ctx.rotate(ts.ang);
+                ctx.beginPath(); ctx.moveTo(0, 0);
+                ctx.quadraticCurveTo(-this.w*1.5, -this.w*0.8 + tailWave*this.w, -this.w*3.5, -this.w*1.2 + tailWave*this.w);
+                ctx.quadraticCurveTo(-this.w*2.8, -this.w*0.3, -this.w*2.5, 0);
+                ctx.quadraticCurveTo(-this.w*2.8, this.w*0.3, -this.w*3.5, this.w*1.2 + tailWave*this.w);
+                ctx.quadraticCurveTo(-this.w*1.5, this.w*0.8 + tailWave*this.w, 0, 0);
+                ctx.fill(); ctx.stroke(); ctx.restore();
+            }
+        }
+
+        const smallFishColors = [
+            {r:90,g:95,b:100}, {r:80,g:85,b:90}, {r:100,g:105,b:110},
+            {r:70,g:75,b:80}, {r:110,g:115,b:120}, {r:85,g:90,b:95},
+            {r:75,g:80,b:85}, {r:95,g:100,b:105},
+            {r:25,g:25,b:30}, {r:35,g:35,b:40}, {r:20,g:22,b:25},
+            {r:40,g:42,b:45}, {r:30,g:30,b:35}, {r:45,g:45,b:50}
+        ];
+        const smallFishAccentColors = [
+            {r:180,g:120,b:60}, {r:200,g:150,b:70}, {r:160,g:100,b:50},
+            {r:190,g:140,b:55}, {r:170,g:110,b:45}, {r:185,g:130,b:65}
+        ];
+
+        class SmallFish {
+            constructor(x, y) {
+                this.x = x; this.y = y; this.ang = rand()*PI2;
+                this.baseSpd = 0.6 + rand()*0.5; this.spd = this.baseSpd;
+                this.len = 8 + rand()*14; this.w = this.len * 0.12;
+                this.segs = 5;
+                this.spine = [];
+                for (let i = 0; i < this.segs; i++) this.spine.push({x: x - i*(this.len/this.segs), y: y, ang: this.ang});
+                this.swim = rand()*PI2; this.swimSpd = 0.1 + rand()*0.06;
+                this.tgtX = x; this.tgtY = y; this.tgtFood = null; this.startled = false;
+                // 15% chance of accent color (orange/yellow/brown)
+                if (rand() < 0.15) {
+                    this.col = smallFishAccentColors[floor(rand()*smallFishAccentColors.length)];
+                } else {
+                    this.col = smallFishColors[floor(rand()*smallFishColors.length)];
+                }
+                this.wanderAng = rand()*PI2;
+                this.wanderTimer = 0;
+            }
+            findFood() {
+                let near = null, minD = 150;
+                for (const f of foodParticles) { if (f.eaten) continue; const d = hypot(f.x-this.x, f.y-this.y); if (d < minD) { minD = d; near = f; } }
+                return near;
+            }
+            update(allKoi, allSmall) {
+                this.swim += this.swimSpd;
+                this.wanderTimer++;
+                
+                let sepX = 0, sepY = 0, fleeX = 0, fleeY = 0;
+                let cohX = 0, cohY = 0, alignX = 0, alignY = 0, neighbors = 0;
+                
+                // Schooling behavior
+                for (const o of allSmall) {
+                    if (o === this) continue;
+                    const dx = o.x - this.x, dy = o.y - this.y, d = hypot(dx, dy);
+                    
+                    // Separation (avoid getting too close)
+                    if (d < 20 && d > 0) {
+                        const str = ((20-d)/20)**2;
+                        sepX -= dx/d * str;
+                        sepY -= dy/d * str;
+                    }
+                    
+                    // Cohesion and alignment (within school range)
+                    if (d < 80 && d > 0) {
+                        cohX += dx; cohY += dy;
+                        alignX += cos(o.ang); alignY += sin(o.ang);
+                        neighbors++;
+                    }
+                }
+                
+                // Flee from large koi
+                for (const k of allKoi) {
+                    const dx = this.x-k.x, dy = this.y-k.y, d = hypot(dx, dy);
+                    if (d < 100 && d > 0) { const str = ((100-d)/100)**2 * 4; fleeX += dx/d*str; fleeY += dy/d*str; }
+                }
+                
+                this.tgtFood = this.findFood();
+                if (fleeX || fleeY) {
+                    const fa = Math.atan2(fleeY, fleeX);
+                    this.tgtX = this.x + cos(fa)*100; this.tgtY = this.y + sin(fa)*100;
+                    this.spd = this.baseSpd * 2.5;
+                    this.startled = true;
+                } else if (this.tgtFood) {
+                    this.tgtX = this.tgtFood.x; this.tgtY = this.tgtFood.y;
+                    const d = hypot(this.tgtFood.x-this.x, this.tgtFood.y-this.y);
+                    this.spd = d < 30 ? 0.8 + d/30*1.5 : 2;
+                    if (d < 8) { this.tgtFood.eaten = true; this.tgtFood = null; }
+                    this.startled = false;
+                } else {
+                    this.spd = this.baseSpd;
+                    const md = hypot(mouseX-this.x, mouseY-this.y);
+                    if (md < 100) {
+                        const fi = 1 - md/100, aa = Math.atan2(this.y-mouseY, this.x-mouseX);
+                        this.tgtX = this.x + cos(aa)*(80+fi*60); this.tgtY = this.y + sin(aa)*(80+fi*60);
+                        this.spd = this.baseSpd + fi*2; this.startled = true;
+                    } else {
+                        this.startled = false;
+                        
+                        // Periodically change wander direction to avoid circles
+                        if (this.wanderTimer > 120 + rand()*180) {
+                            this.wanderAng += (rand()-0.5)*PI;
+                            this.wanderTimer = 0;
+                        }
+                        
+                        // Apply schooling when not startled
+                        if (neighbors > 0) {
+                            // Cohesion: move toward center of nearby fish
+                            cohX /= neighbors; cohY /= neighbors;
+                            const cohStr = 0.015;
+                            this.tgtX = this.x + cohX * cohStr * 50;
+                            this.tgtY = this.y + cohY * cohStr * 50;
+                            
+                            // Alignment: match heading of nearby fish
+                            alignX /= neighbors; alignY /= neighbors;
+                            const alignAng = Math.atan2(alignY, alignX);
+                            let alignDiff = alignAng - this.ang;
+                            while (alignDiff > PI) alignDiff -= PI2;
+                            while (alignDiff < -PI) alignDiff += PI2;
+                            this.ang += alignDiff * 0.03;
+                            
+                            // Add slight wander to break patterns
+                            this.tgtX += cos(this.wanderAng) * 30;
+                            this.tgtY += sin(this.wanderAng) * 30;
+                        } else {
+                            // Wander with gradual direction changes
+                            this.wanderAng += (rand()-0.5) * 0.1;
+                            this.tgtX = this.x + cos(this.wanderAng) * 80;
+                            this.tgtY = this.y + sin(this.wanderAng) * 80;
+                        }
+                        
+                        // Avoid edges - steer back toward center
+                        const edgeMargin = 80;
+                        if (this.x < edgeMargin) this.tgtX += (edgeMargin - this.x) * 0.5;
+                        if (this.x > W - edgeMargin) this.tgtX -= (this.x - (W - edgeMargin)) * 0.5;
+                        if (this.y < edgeMargin) this.tgtY += (edgeMargin - this.y) * 0.5;
+                        if (this.y > H - edgeMargin) this.tgtY -= (this.y - (H - edgeMargin)) * 0.5;
+                    }
+                }
+                
+                const dx = this.tgtX-this.x, dy = this.tgtY-this.y, tAng = Math.atan2(dy, dx);
+                let aDiff = tAng - this.ang; while (aDiff > PI) aDiff -= PI2; while (aDiff < -PI) aDiff += PI2;
+                const turnSpd = this.startled ? 0.15 : this.tgtFood ? 0.1 : 0.04;
+                this.ang += aDiff * turnSpd;
+                
+                // Apply separation
+                if (sepX || sepY) {
+                    let sa = Math.atan2(sepY, sepX), sad = sa - this.ang;
+                    while (sad > PI) sad -= PI2; while (sad < -PI) sad += PI2;
+                    this.ang += sad * 0.12 * hypot(sepX, sepY);
+                }
+                
+                this.x += cos(this.ang)*this.spd; this.y += sin(this.ang)*this.spd;
+                const sm = hypot(sepX, sepY); if (sm > 0) { this.x += sepX/sm*Math.min(sm*1.5, 0.8); this.y += sepY/sm*Math.min(sm*1.5, 0.8); }
+                
+                const m = 50; if (this.x < -m) this.x = W+m; if (this.x > W+m) this.x = -m; if (this.y < -m) this.y = H+m; if (this.y > H+m) this.y = -m;
+                
+                this.spine[0] = {x: this.x, y: this.y, ang: this.ang};
+                for (let i = 1; i < this.segs; i++) {
+                    const p = this.spine[i-1], c = this.spine[i], sl = this.len/this.segs, tf = i/this.segs;
+                    const ws = 0.12 + tf*tf*0.35, wo = sin(this.swim - i*0.7)*ws, ta = p.ang + wo;
+                    c.ang = c.ang*0.6 + ta*0.4; c.x = p.x - cos(c.ang)*sl; c.y = p.y - sin(c.ang)*sl;
+                }
+            }
+            draw() {
+                const col = this.col;
+                
+                // Body - skinny
+                for (let i = this.segs-1; i >= 0; i--) {
+                    const s = this.spine[i], tf = i/this.segs;
+                    const wf = tf < 0.25 ? 1 + tf*1.2 : 1.3 * (1 - (tf-0.25)/0.75);
+                    const sw = this.w * Math.max(wf, 0.15);
+                    ctx.save(); ctx.translate(s.x, s.y); ctx.rotate(s.ang);
+                    ctx.fillStyle = `rgba(${col.r},${col.g},${col.b},0.85)`;
+                    ctx.beginPath(); ctx.ellipse(0, 0, this.len/this.segs*0.7, sw, 0, 0, PI2); ctx.fill();
+                    ctx.restore();
+                }
+                
+                // Tail fin - smaller
+                const ts = this.spine[this.segs-1];
+                ctx.save(); ctx.translate(ts.x, ts.y); ctx.rotate(ts.ang);
+                ctx.fillStyle = `rgba(${col.r*0.85},${col.g*0.85},${col.b*0.85},0.6)`;
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.quadraticCurveTo(-this.w*1, -this.w*0.6, -this.w*1.5, -this.w*0.2);
+                ctx.quadraticCurveTo(-this.w*1.2, 0, -this.w*1.5, this.w*0.2);
+                ctx.quadraticCurveTo(-this.w*1, this.w*0.6, 0, 0);
+                ctx.fill(); ctx.restore();
+                
+                // Eye - smaller
+                const h = this.spine[0];
+                ctx.save(); ctx.translate(h.x, h.y); ctx.rotate(h.ang);
+                ctx.fillStyle = '#222';
+                ctx.beginPath(); ctx.arc(this.w*0.2, -this.w*0.3, this.w*0.25, 0, PI2); ctx.fill();
+                ctx.beginPath(); ctx.arc(this.w*0.2, this.w*0.3, this.w*0.25, 0, PI2); ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function resetPond() {
+            // Clear all arrays
+            allFish.length = 0;
+            smallFish.length = 0;
+            mapleLeaves.length = 0;
+            ripples.length = 0;
+            foodParticles.length = 0;
+            
+            // Create new elements
+            for (let i = 0; i < 8; i++) mapleLeaves.push(new MapleLeaf());
+            // Create koi with random sizes (65-165)
+            for (let i = 0; i < 4; i++) {
+                const size = 65 + rand()*100;
+                allFish.push(new KoiFish(rand()*W, rand()*H, size));
+            }
+            // Create many small fish
+            for (let i = 0; i < 25; i++) {
+                smallFish.push(new SmallFish(rand()*W, rand()*H));
+            }
+        }
+        
+        resetPond();
+
+        const spawnFood = (x, y) => { foodParticles.push(new FoodParticle(x, y)); ripples.push(new Ripple(x, y)); setTimeout(() => ripples.push(new Ripple(x, y)), 300); };
+        canvas.addEventListener('click', e => { const c = getCoords(e.clientX, e.clientY); spawnFood(c.x, c.y); });
+        canvas.addEventListener('touchstart', e => { e.preventDefault(); const c = getCoords(e.touches[0].clientX, e.touches[0].clientY); spawnFood(c.x, c.y); });
+
+        function drawCaustics(t) {
+            ctx.save();
+            for (let i = 0; i < 8; i++) { const s = i*193.7, x = (s*9 + sin(t*0.0003+s)*100)%W, y = (s*7 + cos(t*0.0004+s)*80)%H, sz = 120 + sin(t*0.0005+s)*40;
+                const g = ctx.createRadialGradient(x, y, 0, x, y, sz); g.addColorStop(0, 'rgba(5,20,35,0.15)'); g.addColorStop(0.6, 'rgba(8,30,50,0.08)'); g.addColorStop(1, 'rgba(10,40,60,0)');
+                ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, sz, 0, PI2); ctx.fill(); }
+            for (let i = 0; i < 18; i++) { const s = i*137.5, bx = (s*7)%W, by = (s*11)%H;
+                const ox = sin(t*0.0006+s)*60 + sin(t*0.001+s*2)*30 + sin(t*0.0015+s*0.5)*20;
+                const oy = cos(t*0.0005+s*0.5)*50 + cos(t*0.0008+s*1.5)*25 + cos(t*0.0012+s*0.3)*15;
+                const x = (bx+ox+W)%W, y = (by+oy+H)%H, sz = 50 + (s%70) + sin(t*0.0008+s*0.3)*25;
+                const op = Math.max(0, 0.025 + sin(t*0.001+s*0.7)*0.015 + sin(t*0.0018+s*1.2)*0.01);
+                const g = ctx.createRadialGradient(x, y, 0, x, y, sz);
+                g.addColorStop(0, `rgba(160,210,255,${op*2.5})`); g.addColorStop(0.2, `rgba(140,195,250,${op*1.8})`);
+                g.addColorStop(0.5, `rgba(120,180,245,${op})`); g.addColorStop(0.8, `rgba(100,165,240,${op*0.3})`); g.addColorStop(1, 'rgba(80,150,235,0)');
+                ctx.fillStyle = g; ctx.beginPath(); const wb = t*0.0008 + s;
+                for (let p = 0; p <= 8; p++) { const a = p/8*PI2, wa = 0.7 + sin(wb+a*2)*0.2 + sin(wb*1.3+a*3)*0.1;
+                    const px = x + cos(a)*sz*wa, py = y + sin(a)*sz*wa;
+                    if (p === 0) ctx.moveTo(px, py); else { const pa = (p-1)/8*PI2, ca = (a+pa)/2, cw = 0.9 + sin(wb+ca*2.5)*0.15;
+                        ctx.quadraticCurveTo(x + cos(ca)*sz*cw*1.1, y + sin(ca)*sz*cw*1.1, px, py); } }
+                ctx.closePath(); ctx.fill(); }
+            for (let i = 0; i < 12; i++) { const s = i*234.7, x = (s*5 + sin(t*0.0004+s)*180)%W, y = (s*3 + cos(t*0.0005+s)*120)%H;
+                const l = 25 + sin(t*0.0015+s)*15, a = t*0.0002 + s + sin(t*0.0008+s)*0.3, op = 0.04 + sin(t*0.002+s)*0.025;
+                const g = ctx.createLinearGradient(x-cos(a)*l, y-sin(a)*l, x+cos(a)*l, y+sin(a)*l);
+                g.addColorStop(0, 'rgba(255,255,255,0)'); g.addColorStop(0.3, `rgba(200,230,255,${op*0.5})`);
+                g.addColorStop(0.5, `rgba(255,255,255,${op})`); g.addColorStop(0.7, `rgba(200,230,255,${op*0.5})`); g.addColorStop(1, 'rgba(255,255,255,0)');
+                ctx.strokeStyle = g; ctx.lineWidth = 1.5 + sin(t*0.001+s)*0.8; ctx.lineCap = 'round';
+                ctx.beginPath(); ctx.moveTo(x-cos(a)*l, y-sin(a)*l); ctx.lineTo(x+cos(a)*l, y+sin(a)*l); ctx.stroke(); }
+            for (let i = 0; i < 25; i++) { const s = i*89.3, sp = t*0.003 + s, so = Math.max(0, sin(sp)*0.4 - 0.2);
+                if (so > 0) { const x = (s*13 + sin(t*0.0007+s)*50)%W, y = (s*17 + cos(t*0.0006+s)*40)%H;
+                    ctx.fillStyle = `rgba(255,255,255,${so})`; ctx.beginPath(); ctx.arc(x, y, 1.5, 0, PI2); ctx.fill(); } }
+            ctx.restore();
+        }
+
+        function animate() {
+            const t = Date.now();
+            ctx.fillStyle = '#0c2a42'; ctx.fillRect(0, 0, W, H);
+            const wg = ctx.createRadialGradient(W/2, H*0.4, 0, W/2, H*0.5, Math.max(W, H)*0.8);
+            wg.addColorStop(0, 'rgba(55,115,160,0.65)'); wg.addColorStop(0.4, 'rgba(40,85,125,0.45)');
+            wg.addColorStop(0.7, 'rgba(25,60,95,0.25)'); wg.addColorStop(1, 'rgba(10,35,60,0)');
+            ctx.fillStyle = wg; ctx.fillRect(0, 0, W, H);
+            const vg = ctx.createRadialGradient(W/2, H/2, W*0.2, W/2, H/2, W*0.8);
+            vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(0.7, 'rgba(0,10,20,0.1)'); vg.addColorStop(1, 'rgba(0,5,15,0.2)');
+            ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
+            drawCaustics(t);
+            const pt = t*0.008;
+            for (let i = 0; i < 40; i++) { const s = i*47.3, x = (s*23 + pt*(0.5+(i%3)*0.3) + sin(t*0.001+s)*20)%W;
+                const y = (s*19 + pt*(0.3+(i%4)*0.2) + cos(t*0.0008+s)*15)%H, sz = 1 + (i%3)*0.5, op = 0.02 + sin(t*0.002+s)*0.015;
+                ctx.fillStyle = `rgba(200,220,240,${op})`; ctx.beginPath(); ctx.arc(x, y, sz, 0, PI2); ctx.fill(); }
+            for (let i = foodParticles.length-1; i >= 0; i--) { const f = foodParticles[i]; f.update(); f.draw(); if (f.offScreen() || f.eaten) foodParticles.splice(i, 1); }
+            for (let i = ripples.length-1; i >= 0; i--) { const r = ripples[i]; r.update(); r.draw(); if (r.done()) ripples.splice(i, 1); }
+            smallFish.forEach(f => f.update(allFish, smallFish)); smallFish.forEach(f => f.draw());
+            allFish.forEach(f => f.update(allFish)); allFish.forEach(f => f.draw());
+            mapleLeaves.forEach(l => { l.update(allFish); l.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
