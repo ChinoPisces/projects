@@ -1,0 +1,22 @@
+name: Character sheet validation
+on:
+  push:
+    paths:
+      - 'character-sheet/**'
+      - '.github/workflows/character-sheet-check.yml'
+  pull_request:
+    paths:
+      - 'character-sheet/**'
+      - '.github/workflows/character-sheet-check.yml'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax check
+        run: node --check character-sheet/v1/engine.js
+      - name: Validate character manifests and engine contracts
+        run: node character-sheet/v1/tests/validate.cjs
