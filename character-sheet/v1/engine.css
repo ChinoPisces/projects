@@ -1,6 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap");
 /* Character Sheet Engine v1. One stylesheet, scoped to the app. */
-#characterApp{--cs-bg:#302c32;--cs-surface:#39363c;--cs-header:rgba(38,35,42,.86);--cs-text:#f5f1ed;--cs-muted:#c1b7c0;--cs-ink:#f5f1ed;--cs-accent:#b9665e;--cs-border:rgba(245,241,237,.3);--cs-grid:rgba(245,241,237,.13);--cs-font:"Montserrat",Arial,Helvetica,sans-serif;--cs-font-display:"Montserrat",Arial,Helvetica,sans-serif;--cs-font-tech:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;position:relative;isolation:isolate;min-height:100vh;background:var(--cs-bg);color:var(--cs-text);font-family:var(--cs-font);overflow:clip}
+#characterApp{--cs-bg:#302c32;--cs-surface:#39363c;--cs-header:rgba(38,35,42,.86);--cs-text:#f5f1ed;--cs-muted:#c1b7c0;--cs-ink:#f5f1ed;--cs-accent:#b9665e;--cs-border:rgba(245,241,237,.3);--cs-grid:rgba(245,241,237,.13);--cs-font:inherit;--cs-font-display:inherit;--cs-font-tech:inherit;--cs-font-brand:inherit;--cs-font-cta:inherit;--cs-font-weight-headline:800;--cs-font-weight-brand:700;--cs-font-weight-body:400;--cs-font-weight-label:700;position:relative;isolation:isolate;min-height:100vh;background:var(--cs-bg);color:var(--cs-text);font-family:var(--cs-font);overflow:clip}
 #characterApp[data-theme="mona"]{--cs-bg:#afa2ad;--cs-surface:#b6a9b3;--cs-header:rgba(175,162,173,.78);--cs-text:#312e36;--cs-muted:#524952;--cs-ink:#f5f1ed;--cs-accent:#574551;--cs-border:rgba(43,40,47,.38);--cs-grid:rgba(43,40,47,.30)}
 #characterApp,#characterApp *{box-sizing:border-box}
 #characterApp button,#characterApp a{font:inherit}
@@ -68,6 +67,9 @@
 }
 @media(prefers-reduced-motion:reduce){#characterApp *,#characterApp *::before,#characterApp *::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 /* Consistent typography with existing Webflow visual hierarchy. */
-#characterApp .cs-brand strong,#characterApp .cs-headline,#characterApp .cs-section h2{font-family:var(--cs-font-display);font-weight:800;}
+#characterApp .cs-brand strong{font-family:var(--cs-font-brand);font-weight:var(--cs-font-weight-brand)}
+#characterApp .cs-headline,#characterApp .cs-section h2{font-family:var(--cs-font-display);font-weight:var(--cs-font-weight-headline);}
 #characterApp .cs-brand small,#characterApp .cs-nav a,#characterApp .cs-eyebrow,#characterApp .cs-kicker,#characterApp .cs-button,#characterApp .cs-readout,#characterApp .cs-info-item dt,#characterApp .cs-gallery figcaption,#characterApp .cs-footer,#characterApp .cs-visual figcaption{font-family:var(--cs-font-tech);}
-#characterApp .cs-copy p.cs-description,#characterApp .cs-info-item dd,#characterApp .cs-section>p{font-family:var(--cs-font);}
+#characterApp .cs-copy p.cs-description,#characterApp .cs-info-item dd,#characterApp .cs-section>p{font-family:var(--cs-font);font-weight:var(--cs-font-weight-body)}
+#characterApp .cs-eyebrow,#characterApp .cs-kicker,#characterApp .cs-nav a{font-weight:var(--cs-font-weight-label)}
+#characterApp .cs-button{font-family:var(--cs-font-cta)}
