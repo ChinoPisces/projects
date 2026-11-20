@@ -27,6 +27,27 @@ function alertErrors(list){const box=node("div","cs-warning","Character configur
 const manifest=document.getElementById("characterManifest");
 let cfg;
 try{cfg=JSON.parse(manifest?manifest.textContent:"{}");}catch(err){alertErrors(["Malformed JSON character manifest"]);return;}
+if(cfg.id==="new-character" && Array.isArray(cfg.gaze&&cfg.gaze.frames) && cfg.gaze.frames.length===16 && cfg.gaze.frames.every(f=>!f.url)){
+ app.dataset.theme="custom";
+ app.replaceChildren();
+ const head=node("header","cs-header");
+ const brand=node("a","cs-brand");brand.href="#starter";brand.append(node("strong","","NEW CHARACTER"),node("small","","CHARACTER SHEET STARTER"));head.append(brand);app.append(head);
+ const hero=section("starter","cs-pane");
+ const visual=node("div","cs-visual");
+ const frame=node("div","cs-frame");frame.setAttribute("aria-label","Placeholder for the 16-direction character portrait");
+ const label=node("div","cs-fallback","ADD 16 GAZE IMAGES TO YOUR CHARACTER MANIFEST");
+ label.style.display="flex";label.style.border="1px dashed var(--cs-border)";
+ frame.append(label);visual.append(frame);
+ const copy=node("div","cs-copy");
+ copy.append(node("p","cs-eyebrow","CHARACTER SHEET ENGINE // STARTER"),node("h1","cs-headline","READY FOR A NEW CHARACTER"),node("p","cs-description","This is an empty template, not a broken character sheet. Add 16 named gaze images, character information, and a skin in the characterManifest JSON to activate the interactive portrait."));
+ hero.append(visual,copy);app.append(hero);
+ const instructions=section("instructions","cs-section");
+ instructions.append(node("p","cs-kicker","SETUP CHECKLIST"),node("h2","","WHAT TO ADD"));
+ const grid=node("dl","cs-info-grid");
+ [["01","Character name, biography, appearance"],["02","16 HTTPS gaze image URLs"],["03","Theme colors and typography"],["04","Optional 16-view turntable and studies"]].forEach(item=>{const cell=node("div","cs-info-item");cell.append(node("dt","",item[0]),node("dd","",item[1]));grid.append(cell);});
+ instructions.append(grid);app.append(instructions);
+ return;
+}
 const errors=validate(cfg);if(errors.length){alertErrors(errors);return;}
 app.dataset.theme=cfg.theme||"custom";
 app.dataset.character=cfg.id;
