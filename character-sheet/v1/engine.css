@@ -1,5 +1,5 @@
 /* Character Sheet Engine v1. One stylesheet, scoped to the app. */
-#characterApp{--cs-bg:#302c32;--cs-surface:#39363c;--cs-header:rgba(38,35,42,.86);--cs-text:#f5f1ed;--cs-muted:#c1b7c0;--cs-ink:#f5f1ed;--cs-accent:#b9665e;--cs-border:rgba(245,241,237,.3);--cs-grid:rgba(245,241,237,.13);--cs-font:inherit;--cs-font-display:inherit;--cs-font-tech:inherit;--cs-font-brand:inherit;--cs-font-cta:inherit;--cs-font-weight-headline:800;--cs-font-weight-brand:700;--cs-font-weight-body:400;--cs-font-weight-label:700;position:relative;isolation:isolate;min-height:100vh;background:var(--cs-bg);color:var(--cs-text);font-family:var(--cs-font);overflow:clip}
+#characterApp{--cs-bg:#302c32;--cs-surface:#39363c;--cs-header:rgba(38,35,42,.86);--cs-text:#f5f1ed;--cs-muted:#c1b7c0;--cs-ink:#f5f1ed;--cs-accent:#b9665e;--cs-border:rgba(245,241,237,.3);--cs-grid:rgba(245,241,237,.13);--cs-font:inherit;--cs-font-display:inherit;--cs-font-section:inherit;--cs-font-label:inherit;--cs-font-tech:inherit;--cs-font-brand:inherit;--cs-font-cta:inherit;--cs-font-weight-headline:800;--cs-font-weight-brand:700;--cs-font-weight-body:400;--cs-font-weight-label:700;position:relative;isolation:isolate;min-height:100vh;background:var(--cs-bg);color:var(--cs-text);font-family:var(--cs-font);overflow:clip}
 #characterApp[data-theme="mona"]{--cs-bg:#afa2ad;--cs-surface:#b6a9b3;--cs-header:rgba(175,162,173,.78);--cs-text:#312e36;--cs-muted:#524952;--cs-ink:#f5f1ed;--cs-accent:#574551;--cs-border:rgba(43,40,47,.38);--cs-grid:rgba(43,40,47,.30)}
 #characterApp,#characterApp *{box-sizing:border-box}
 #characterApp button,#characterApp a{font:inherit}
@@ -73,3 +73,7 @@
 #characterApp .cs-copy p.cs-description,#characterApp .cs-info-item dd,#characterApp .cs-section>p{font-family:var(--cs-font);font-weight:var(--cs-font-weight-body)}
 #characterApp .cs-eyebrow,#characterApp .cs-kicker,#characterApp .cs-nav a{font-weight:var(--cs-font-weight-label)}
 #characterApp .cs-button{font-family:var(--cs-font-cta)}
+
+/* Mirror the separately computed Ash typography roles. */
+#characterApp .cs-section h2{font-family:var(--cs-font-section,var(--cs-font-display))}
+#characterApp .cs-brand small{font-family:var(--cs-font-label,var(--cs-font-tech))}
