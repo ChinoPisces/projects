@@ -1,0 +1,286 @@
+{
+  "id": "ash",
+  "name": "Ash",
+  "theme": "ash",
+  "tagline": "A WATCHFUL PRESENCE",
+  "headline": "WORN LEATHER & COLD STEEL",
+  "biography": "A delinquent student and loner, Ash keeps to the shadows and says little. Not much is known about him; his quiet presence and indifference to authority leave others at a distance.",
+  "appearance": "Black leather, worn gunmetal, and a trace of dark red define his appearance. A single armored shoulder breaks the silhouette. An off-white shirt softens the dark layers, while a hard case secured to his right thigh and heavy lace-up boots complete his practical kit.",
+  "gaze": {
+    "initial": "left",
+    "scale": 1,
+    "anchor": "center bottom",
+    "frames": [
+      {
+        "direction": "up",
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af7eef3203bae36f985bded_ash-gaze-up-cut.webp",
+        "alt": "Ash, body locked at three-quarter angle, gaze up"
+      },
+      {
+        "direction": "up-up-right",
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af7eef45a0a5be3b7630e4b_ash-gaze-up-up-right-cut.webp",
+        "alt": "Ash, body locked at three-quarter angle, gaze up-up-right"
+      },
+      {
+        "direction": "up-right",
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af7eef47fb2150353c64ca3_ash-gaze-up-right-cut.webp",
+        "alt": "Ash, body locked at three-quarter angle, gaze up-right"
+      },
+      {
+        "direction": "right-up-right",
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af7eef3144c5ef4372eab08_ash-gaze-right-up-right-cut.webp",
+        "alt": "Ash, body locked at three-quarter angle, gaze right-up-right"
+      },
+      {
+        "direction": "right",
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af7eef32cdb9fbaa34c0a1f_ash-gaze-right-cut.webp",
+        "alt": "Ash, body locked at three-quarter angle, gaze right"
+      },
+      {
+        "direction": "right-right-down",
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af7eef37fb2150353c64bf2_ash-gaze-right-right-down-cut.webp",
+        "alt": "Ash, body locked at three-quarter angle, gaze right-right-down"
+      },
+      {
+        "direction": "right-down",
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af7eef32cdb9fbaa34c0a55_ash-gaze-right-down-cut.webp",
+        "alt": "Ash, body locked at three-quarter angle, gaze right-down"
+      },
+      {
+        "direction": "down-right-down",
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af7eef20c167c21adc048e4_ash-gaze-down-right-down-cut.webp",
+        "alt": "Ash, body locked at three-quarter angle, gaze down-right-down"
+      },
+      {
+        "direction": "down",
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af7eef1a568b187ff224be7_ash-gaze-down-cut.webp",
+        "alt": "Ash, body locked at three-quarter angle, gaze down"
+      },
+      {
+        "direction": "down-down-left",
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af7eef2a568b187ff224c19_ash-gaze-down-down-left-cut.webp",
+        "alt": "Ash, body locked at three-quarter angle, gaze down-down-left"
+      },
+      {
+        "direction": "down-left",
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af7eef2a568b187ff224c33_ash-gaze-down-left-cut.webp",
+        "alt": "Ash, body locked at three-quarter angle, gaze down-left"
+      },
+      {
+        "direction": "left-down-left",
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af7eef20c167c21adc04912_ash-gaze-left-down-left-cut.webp",
+        "alt": "Ash, body locked at three-quarter angle, gaze left-down-left"
+      },
+      {
+        "direction": "left",
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af7eef2bd3ed241894556ca_ash-gaze-left-cut.webp",
+        "alt": "Ash, body locked at three-quarter angle, gaze left (default)"
+      },
+      {
+        "direction": "left-left-up",
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af7eef3203bae36f985bd53_ash-gaze-left-left-up-cut.webp",
+        "alt": "Ash, body locked at three-quarter angle, gaze left-left-up"
+      },
+      {
+        "direction": "left-up",
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af7eef373c8401fda884394_ash-gaze-left-up-cut.webp",
+        "alt": "Ash, body locked at three-quarter angle, gaze left-up"
+      },
+      {
+        "direction": "up-left-up",
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af7eef4203bae36f985be29_ash-gaze-up-left-up-cut.webp",
+        "alt": "Ash, body locked at three-quarter angle, gaze up-left-up"
+      }
+    ]
+  },
+  "turntable": {
+    "enabled": true,
+    "initialYaw": 315,
+    "stepDegrees": 22.5,
+    "scale": 1,
+    "anchor": "center center",
+    "frames": [
+      {
+        "yaw": 0,
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6afb53fc4ac8c422e0db2b1b_ash-turn-r21-000.webp",
+        "alt": "Ash, full body, front view"
+      },
+      {
+        "yaw": 22.5,
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6afb53fd309c956bf9e722a4_ash-turn-r21-022_5.webp",
+        "alt": "Ash, full body, generated intermediate view between front and three-quarter right"
+      },
+      {
+        "yaw": 45,
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6afb53fe62cf09091c887adf_ash-turn-r21-045.webp",
+        "alt": "Ash, full body, three-quarter view, right side forward"
+      },
+      {
+        "yaw": 67.5,
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6afb53fe3b6a3a4e8d984350_ash-turn-r21-067_5.webp",
+        "alt": "Ash, full body, generated intermediate view between three-quarter right and right profile"
+      },
+      {
+        "yaw": 90,
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6afb53fe3d130e22b942d88d_ash-turn-r21-090.webp",
+        "alt": "Ash, full body, right profile"
+      },
+      {
+        "yaw": 112.5,
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6afb53fe7e4eaa6bc82961ab_ash-turn-r21-112_5.webp",
+        "alt": "Ash, full body, generated intermediate view between right profile and rear three-quarter right"
+      },
+      {
+        "yaw": 135,
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6afb53fe7e4eaa6bc82961be_ash-turn-r21-135.webp",
+        "alt": "Ash, full body, rear three-quarter from the right"
+      },
+      {
+        "yaw": 157.5,
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6afb53fffb3c21103d94ed81_ash-turn-r21-157_5.webp",
+        "alt": "Ash, full body, generated intermediate view between rear three-quarter right and back"
+      },
+      {
+        "yaw": 180,
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6afb53ff6ba1f8dcb9bb3550_ash-turn-r21-180.webp",
+        "alt": "Ash, full body, back view"
+      },
+      {
+        "yaw": 202.5,
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6afb53ff27f1627ef70bb52a_ash-turn-r21-202_5.webp",
+        "alt": "Ash, full body, generated intermediate view between back and rear three-quarter left"
+      },
+      {
+        "yaw": 225,
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6afb53ff36f64c11ae425b11_ash-turn-r21-225.webp",
+        "alt": "Ash, full body, rear three-quarter from the left"
+      },
+      {
+        "yaw": 247.5,
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6afb53ff704ab2c88b3b9800_ash-turn-r21-247_5.webp",
+        "alt": "Ash, full body, generated intermediate view between rear three-quarter left and left profile"
+      },
+      {
+        "yaw": 270,
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6afb5400704ab2c88b3b9822_ash-turn-r21-270.webp",
+        "alt": "Ash, full body, left profile"
+      },
+      {
+        "yaw": 292.5,
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6afb540013addc563f18d413_ash-turn-r21-292_5.webp",
+        "alt": "Ash, full body, generated intermediate view between left profile and three-quarter left"
+      },
+      {
+        "yaw": 315,
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6afb53fc66fde60740a30f4f_ash-turn-r21-315.webp",
+        "alt": "Ash, full body, three-quarter view from his left"
+      },
+      {
+        "yaw": 337.5,
+        "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6afb540027f1627ef70bb5d6_ash-turn-r21-337_5.webp",
+        "alt": "Ash, full body, generated intermediate view between three-quarter left and front"
+      }
+    ]
+  },
+  "details": [
+    [
+      "Study",
+      "Queen of Heaven"
+    ],
+    [
+      "Gaze",
+      "16 directions"
+    ],
+    [
+      "Turntable",
+      "16 views / 360°"
+    ],
+    [
+      "Visual language",
+      "Industrial / tactical"
+    ]
+  ],
+  "gallery": [],
+  "skin": {
+    "background": "#302c32",
+    "surface": "#39363c",
+    "header": "rgba(38,35,42,.86)",
+    "text": "#f5f1ed",
+    "muted": "#c1b7c0",
+    "headline": "#f5f1ed",
+    "accent": "#b9665e",
+    "border": "rgba(245,241,237,.3)",
+    "grid": "rgba(245,241,237,.13)"
+  },
+  "schemaVersion": 1,
+  "poses": [
+    {
+      "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af8108aa542196914339387_ash-pose-approach-stride.webp",
+      "alt": "Ash walking toward the viewer mid-stride, arms loose at his sides"
+    },
+    {
+      "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af8108be4841da674147c44_ash-pose-low-angle.webp",
+      "alt": "Ash seen from a low angle, standing tall with his boots planted wide"
+    },
+    {
+      "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af8108b64f959fec9b2d43c_ash-pose-descent.webp",
+      "alt": "Ash landing in a low crouch, one fist to the ground and his jacket flaring behind him"
+    }
+  ],
+  "afterdark": [
+    {
+      "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af8d9b748a52419c4368491_ash-city-silhouette-hologram.webp",
+      "alt": "Ash in silhouette on a wet rooftop, facing a giant hologram of a woman above a neon city"
+    },
+    {
+      "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af8d9b737b7ad5bc81a647a_ash-city-overpass-rain.webp",
+      "alt": "Ash leaning on a rain-soaked railing above a neon-lit overpass"
+    },
+    {
+      "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af914de994d262a7119f24d_ash-half-in-shadow-v2.webp",
+      "alt": "Close portrait of Ash, half his face lit and half in shadow, looking upward"
+    },
+    {
+      "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af8d9b737b7ad5bc81a648d_ash-city-service-corridor.webp",
+      "alt": "Ash walking toward the viewer down a steaming industrial corridor, hands in his pockets"
+    },
+    {
+      "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af91875a66569d3020cea08_ash-city-loading-dock-v2.webp",
+      "alt": "Ash sitting on a loading dock beside a glowing vending machine at night"
+    },
+    {
+      "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6af8d9b737d7fb834f1ea126_ash-city-through-wet-glass.webp",
+      "alt": "Ash seen through a rain-streaked window, city lights blurred behind him"
+    },
+    {
+      "url": "https://cdn.prod.website-files.com/6553caa42be844f2b3c45e3f/6afa171af37ee29748de9497_ash-city-seen-from-above-v3.webp",
+      "alt": "Ash sitting on a rusted fire-escape landing, seen from above, looking off into the distance over the city"
+    }
+  ],
+  "materials": [
+    [
+      "Outer layer",
+      "Worn black leather"
+    ],
+    [
+      "Armor",
+      "Gunmetal shoulder detail"
+    ],
+    [
+      "Shirt",
+      "Off-white"
+    ],
+    [
+      "Accent",
+      "Deep red"
+    ],
+    [
+      "Footwear",
+      "Heavy lace-up boots"
+    ]
+  ],
+  "sheets": {
+    "enabled": true,
+    "caption": "Ash · Queen of Heaven"
+  }
+}
