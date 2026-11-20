@@ -77,3 +77,20 @@
 /* Mirror the separately computed Ash typography roles. */
 #characterApp .cs-section h2{font-family:var(--cs-font-section,var(--cs-font-display))}
 #characterApp .cs-brand small{font-family:var(--cs-font-label,var(--cs-font-tech))}
+
+/* Exact tracking copied from the corresponding computed Ash typography roles. */
+#characterApp .cs-brand strong{letter-spacing:var(--cs-track-brand,normal)}
+#characterApp .cs-brand small{letter-spacing:var(--cs-track-small,normal)}
+#characterApp .cs-nav a{letter-spacing:var(--cs-track-nav,normal)}
+#characterApp .cs-eyebrow{letter-spacing:var(--cs-track-eyebrow,normal)}
+#characterApp .cs-headline{letter-spacing:var(--cs-track-headline,normal)}
+#characterApp .cs-copy p.cs-description{letter-spacing:var(--cs-track-body,normal)}
+#characterApp .cs-button{letter-spacing:var(--cs-track-cta,normal)}
+#characterApp .cs-readout{letter-spacing:var(--cs-track-technical,normal)}
+#characterApp .cs-info-item dt{letter-spacing:var(--cs-track-technical,normal)}
+#characterApp .cs-gallery figcaption{letter-spacing:var(--cs-track-technical,normal)}
+#characterApp .cs-footer{letter-spacing:var(--cs-track-technical,normal)}
+#characterApp .cs-visual figcaption{letter-spacing:var(--cs-track-technical,normal)}
+#characterApp .cs-kicker{letter-spacing:var(--cs-track-eyebrow,normal)}
+#characterApp .cs-section h2{letter-spacing:var(--cs-track-section,normal)}
+#characterApp .cs-info-item dd{letter-spacing:var(--cs-track-body,normal)}
