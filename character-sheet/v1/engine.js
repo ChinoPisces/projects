@@ -18,6 +18,9 @@ function inheritAshTypography(){
   const computed=getComputedStyle(el);
   const variable=map[token];
   if(variable&&computed.fontFamily)app.style.setProperty(variable,computed.fontFamily);
+  /* Use actual letter spacing from Ash, including 'normal' and negative tracking. */
+  const tracking={brand:"--cs-track-brand",small:"--cs-track-small",nav:"--cs-track-nav",eyebrow:"--cs-track-eyebrow",headline:"--cs-track-headline",body:"--cs-track-body",cta:"--cs-track-cta",technical:"--cs-track-technical",section:"--cs-track-section"};
+  if(tracking[role])app.style.setProperty(tracking[role],computed.letterSpacing);
   if(role==="headline")app.style.setProperty("--cs-font-weight-headline",computed.fontWeight);
   if(role==="brand")app.style.setProperty("--cs-font-weight-brand",computed.fontWeight);
   if(role==="body")app.style.setProperty("--cs-font-weight-body",computed.fontWeight);
