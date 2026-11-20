@@ -3,6 +3,29 @@
 const DIRECTIONS=["up","up-up-right","up-right","right-up-right","right","right-right-down","right-down","down-right-down","down","down-down-left","down-left","left-down-left","left","left-left-up","left-up","up-left-up"];
 const app=document.getElementById("characterApp");
 if(!app)return;
+/* Read typography from the original Ash CSS, not from site-wide font guesses. */
+function inheritAshTypography(){
+ const probe=document.createElement("div");
+ probe.setAttribute("aria-hidden","true");
+ probe.style.cssText="position:fixed!important;left:-200vw!important;top:-200vh!important;width:1200px!important;height:1px!important;overflow:hidden!important;visibility:hidden!important;pointer-events:none!important";
+ probe.innerHTML='<div class="stage stage-gaze" id="gaze"><header class="topbar"><div class="brand"><b data-font-role="brand">Ash</b><span data-font-role="small">CHARACTER PROFILE</span></div><nav class="ash-nav"><a data-font-role="nav">PROFILE</a></nav></header><section class="copy copy-right"><p class="eyebrow" data-font-role="eyebrow">ASH // PROFILE</p><h1 class="headline" data-font-role="headline">CHARACTER</h1><p class="valueprop" data-font-role="body">Sample description</p><div class="cta-row"><button class="cta" data-font-role="cta">INSPECT</button></div><div class="spec-strip"><div data-font-role="technical">CAPTURE SPEC</div></div></section></div><div class="details-wrap" id="details"><h2 class="tagline band-title" data-font-role="section">DETAILS</h2></div>';
+ document.body.append(probe);
+ const roles={brand:"brand",small:"label",nav:"tech",eyebrow:"tech",headline:"display",body:"font",cta:"cta",technical:"tech",section:"section"};
+ const map={brand:"--cs-font-brand",label:"--cs-font-label",tech:"--cs-font-tech",display:"--cs-font-display",font:"--cs-font",cta:"--cs-font-cta",section:"--cs-font-section"};
+ for(const [role,token] of Object.entries(roles)){
+  const el=probe.querySelector('[data-font-role="'+role+'"]');
+  if(!el)continue;
+  const computed=getComputedStyle(el);
+  const variable=map[token];
+  if(variable&&computed.fontFamily)app.style.setProperty(variable,computed.fontFamily);
+  if(role==="headline")app.style.setProperty("--cs-font-weight-headline",computed.fontWeight);
+  if(role==="brand")app.style.setProperty("--cs-font-weight-brand",computed.fontWeight);
+  if(role==="body")app.style.setProperty("--cs-font-weight-body",computed.fontWeight);
+  if(role==="eyebrow")app.style.setProperty("--cs-font-weight-label",computed.fontWeight);
+ }
+ probe.remove();
+}
+inheritAshTypography();
 function node(tag,className,text){const el=document.createElement(tag);if(className)el.className=className;if(text!==undefined)el.textContent=String(text);return el;}
 function section(id,cls){const el=node("section",cls);el.id=id;return el;}
 function image(frame,desc){const el=node("img");el.alt=frame.alt||desc;el.decoding="async";el.draggable=false;el.src=frame.url;return el;}
