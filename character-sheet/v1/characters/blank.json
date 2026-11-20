@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "id": "new-character",
+  "name": "NEW CHARACTER",
+  "theme": "custom",
+  "tagline": "CHARACTER PROFILE",
+  "headline": "NEW CHARACTER",
+  "biography": "Replace with character biography.",
+  "appearance": "Replace with character appearance description.",
+  "skin": {
+    "background": "#302c32",
+    "surface": "#39363c",
+    "header": "rgba(38,35,42,.86)",
+    "text": "#f5f1ed",
+    "muted": "#c1b7c0",
+    "headline": "#f5f1ed",
+    "accent": "#b9665e",
+    "border": "rgba(245,241,237,.30)",
+    "grid": "rgba(245,241,237,.13)"
+  },
+  "gaze": {
+    "initial": "left",
+    "scale": 1,
+    "anchor": "center bottom",
+    "frames": [
+      {
+        "direction": "up",
+        "url": "",
+        "alt": "Replace with up gaze image"
+      },
+      {
+        "direction": "up-up-right",
+        "url": "",
+        "alt": "Replace with up-up-right gaze image"
+      },
+      {
+        "direction": "up-right",
+        "url": "",
+        "alt": "Replace with up-right gaze image"
+      },
+      {
+        "direction": "right-up-right",
+        "url": "",
+        "alt": "Replace with right-up-right gaze image"
+      },
+      {
+        "direction": "right",
+        "url": "",
+        "alt": "Replace with right gaze image"
+      },
+      {
+        "direction": "right-right-down",
+        "url": "",
+        "alt": "Replace with right-right-down gaze image"
+      },
+      {
+        "direction": "right-down",
+        "url": "",
+        "alt": "Replace with right-down gaze image"
+      },
+      {
+        "direction": "down-right-down",
+        "url": "",
+        "alt": "Replace with down-right-down gaze image"
+      },
+      {
+        "direction": "down",
+        "url": "",
+        "alt": "Replace with down gaze image"
+      },
+      {
+        "direction": "down-down-left",
+        "url": "",
+        "alt": "Replace with down-down-left gaze image"
+      },
+      {
+        "direction": "down-left",
+        "url": "",
+        "alt": "Replace with down-left gaze image"
+      },
+      {
+        "direction": "left-down-left",
+        "url": "",
+        "alt": "Replace with left-down-left gaze image"
+      },
+      {
+        "direction": "left",
+        "url": "",
+        "alt": "Replace with left gaze image"
+      },
+      {
+        "direction": "left-left-up",
+        "url": "",
+        "alt": "Replace with left-left-up gaze image"
+      },
+      {
+        "direction": "left-up",
+        "url": "",
+        "alt": "Replace with left-up gaze image"
+      },
+      {
+        "direction": "up-left-up",
+        "url": "",
+        "alt": "Replace with up-left-up gaze image"
+      }
+    ]
+  },
+  "turntable": {
+    "enabled": false,
+    "initialYaw": 315,
+    "stepDegrees": 22.5,
+    "scale": 1,
+    "anchor": "center center",
+    "frames": []
+  },
+  "details": [],
+  "materials": [],
+  "poses": [],
+  "afterdark": [],
+  "gallery": [],
+  "sheets": {
+    "enabled": true,
+    "caption": "NEW CHARACTER · QUEEN OF HEAVEN"
+  }
+}
