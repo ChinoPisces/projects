@@ -1,0 +1,159 @@
+{
+  "id": "mona",
+  "name": "Mona Lin",
+  "theme": "mona",
+  "tagline": "AN OBSERVANT PRESENCE",
+  "headline": "MONA LIN",
+  "biography": "Mona Lin is an observant and compassionate young character from Queen of Heaven.",
+  "appearance": "A futuristic navy uniform with red accents, a backpack, freckles, amber eyes, and two hair buns define Mona's appearance.",
+  "gaze": {
+    "initial": "left",
+    "scale": 1,
+    "anchor": "center bottom",
+    "frames": [
+      {
+        "direction": "up",
+        "url": "https://s3.amazonaws.com/webflow-prod-assets/6553caa42be844f2b3c45e3f/6b00139c12ef308d018ac921_6aff1fad99a8cc7d748c2272_mona-gaze-up.webp",
+        "alt": "Mona Lin, hand resting on her cheek, gaze up"
+      },
+      {
+        "direction": "up-up-right",
+        "url": "https://s3.amazonaws.com/webflow-prod-assets/6553caa42be844f2b3c45e3f/6b00139b93ce330ed0293df9_6aff1fad12227c04d84c9cd7_mona-gaze-up-up-right.webp",
+        "alt": "Mona Lin, hand resting on her cheek, gaze up-up-right"
+      },
+      {
+        "direction": "up-right",
+        "url": "https://s3.amazonaws.com/webflow-prod-assets/6553caa42be844f2b3c45e3f/6b00139b5f138e8d51f4c714_6aff1fad2679929cf4c490c1_mona-gaze-up-right.webp",
+        "alt": "Mona Lin, hand resting on her cheek, gaze up-right"
+      },
+      {
+        "direction": "right-up-right",
+        "url": "https://s3.amazonaws.com/webflow-prod-assets/6553caa42be844f2b3c45e3f/6b00139be174bcea7fe004b0_6aff1fad4cd428675f797f48_mona-gaze-right-up-right.webp",
+        "alt": "Mona Lin, hand resting on her cheek, gaze right-up-right"
+      },
+      {
+        "direction": "right",
+        "url": "https://s3.amazonaws.com/webflow-prod-assets/6553caa42be844f2b3c45e3f/6b00139b42375748bf69f288_6aff1fad609b04fd677e0540_mona-gaze-right.webp",
+        "alt": "Mona Lin, hand resting on her cheek, gaze right"
+      },
+      {
+        "direction": "right-right-down",
+        "url": "https://s3.amazonaws.com/webflow-prod-assets/6553caa42be844f2b3c45e3f/6b00139b324ffff6d0a86c36_6aff1fad7e64c971548c7ed2_mona-gaze-right-right-down.webp",
+        "alt": "Mona Lin, hand resting on her cheek, gaze right-right-down"
+      },
+      {
+        "direction": "right-down",
+        "url": "https://s3.amazonaws.com/webflow-prod-assets/6553caa42be844f2b3c45e3f/6b00139b100966b848dd994f_6aff1fad609b04fd677e051f_mona-gaze-right-down.webp",
+        "alt": "Mona Lin, hand resting on her cheek, gaze right-down"
+      },
+      {
+        "direction": "down-right-down",
+        "url": "https://s3.amazonaws.com/webflow-prod-assets/6553caa42be844f2b3c45e3f/6b00139be174bcea7fe004b3_6aff1fac8b00beb78b50d51d_mona-gaze-down-right-down.webp",
+        "alt": "Mona Lin, hand resting on her cheek, gaze down-right-down"
+      },
+      {
+        "direction": "down",
+        "url": "https://s3.amazonaws.com/webflow-prod-assets/6553caa42be844f2b3c45e3f/6b00139b02b51f876835b289_6aff1fac527ea172014c7fd7_mona-gaze-down.webp",
+        "alt": "Mona Lin, hand resting on her cheek, gaze down"
+      },
+      {
+        "direction": "down-down-left",
+        "url": "https://s3.amazonaws.com/webflow-prod-assets/6553caa42be844f2b3c45e3f/6b00139b6547acd9ff688239_6aff1fac4d2009b2debb59d6_mona-gaze-down-down-left.webp",
+        "alt": "Mona Lin, hand resting on her cheek, gaze down-down-left"
+      },
+      {
+        "direction": "down-left",
+        "url": "https://s3.amazonaws.com/webflow-prod-assets/6553caa42be844f2b3c45e3f/6b00139d99ac84756d00f6ea_6aff1fac4301df7e146a0e7b_mona-gaze-down-left.webp",
+        "alt": "Mona Lin, hand resting on her cheek, gaze down-left"
+      },
+      {
+        "direction": "left-down-left",
+        "url": "https://s3.amazonaws.com/webflow-prod-assets/6553caa42be844f2b3c45e3f/6b00139b04b9328a3b656a4f_6aff1facbab93230b14c3dd0_mona-gaze-left-down-left%20(1).webp",
+        "alt": "Mona Lin, hand resting on her cheek, gaze left-down-left"
+      },
+      {
+        "direction": "left",
+        "url": "https://s3.amazonaws.com/webflow-prod-assets/6553caa42be844f2b3c45e3f/6b00139b015a3e2d605f1d40_6aff1fad4552d732dd2b9e51_mona-gaze-left.webp",
+        "alt": "Mona Lin, hand resting on her cheek, gaze left (default)"
+      },
+      {
+        "direction": "left-left-up",
+        "url": "https://s3.amazonaws.com/webflow-prod-assets/6553caa42be844f2b3c45e3f/6b00139b25194b811749f10c_6aff1fad8b00beb78b50d548_mona-gaze-left-left-up.webp",
+        "alt": "Mona Lin, hand resting on her cheek, gaze left-left-up"
+      },
+      {
+        "direction": "left-up",
+        "url": "https://s3.amazonaws.com/webflow-prod-assets/6553caa42be844f2b3c45e3f/6b00139b5e2e668a73d955c6_6aff1fad7e64c971548c7ea4_mona-gaze-left-up.webp",
+        "alt": "Mona Lin, hand resting on her cheek, gaze left-up"
+      },
+      {
+        "direction": "up-left-up",
+        "url": "https://s3.amazonaws.com/webflow-prod-assets/6553caa42be844f2b3c45e3f/6b00139c3b5e737e97325824_6aff1fadc8f49136edf4d1f5_mona-gaze-up-left-up.webp",
+        "alt": "Mona Lin, hand resting on her cheek, gaze up-left-up"
+      }
+    ]
+  },
+  "turntable": {
+    "enabled": false,
+    "initialYaw": 315,
+    "stepDegrees": 22.5,
+    "scale": 1,
+    "anchor": "center center",
+    "frames": []
+  },
+  "details": [
+    [
+      "Study",
+      "Queen of Heaven"
+    ],
+    [
+      "Gaze",
+      "16 directions"
+    ],
+    [
+      "Turntable",
+      "Awaiting Mona-specific image set"
+    ],
+    [
+      "Visual language",
+      "Lavender / soft technology"
+    ]
+  ],
+  "gallery": [],
+  "skin": {
+    "background": "#afa2ad",
+    "surface": "#b6a9b3",
+    "header": "rgba(175,162,173,.78)",
+    "text": "#312e36",
+    "muted": "#524952",
+    "headline": "#f5f1ed",
+    "accent": "#574551",
+    "border": "rgba(43,40,47,.38)",
+    "grid": "rgba(43,40,47,.30)"
+  },
+  "schemaVersion": 1,
+  "poses": [],
+  "afterdark": [],
+  "materials": [
+    [
+      "Primary outfit",
+      "Navy futuristic uniform"
+    ],
+    [
+      "Detail",
+      "Red trim"
+    ],
+    [
+      "Accessories",
+      "Backpack"
+    ],
+    [
+      "Hair",
+      "Twin buns"
+    ]
+  ],
+  "sheets": {
+    "enabled": true,
+    "caption": "Mona Lin · Queen of Heaven"
+  }
+}
